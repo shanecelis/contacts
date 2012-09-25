@@ -100,11 +100,11 @@ int usage() {
     fprintf(stderr, "      -s sort list\n");
     fprintf(stderr, "      -m show me\n");
     fprintf(stderr, "      -n displays note below each record\n");
-    fprintf(stderr, "      -l loose formatting (doesn't truncate record values)\n");
-    fprintf(stderr, "      -S strict formatting (doesn't add space between columns)\n");
+    fprintf(stderr, "      -l loose formatting (does not truncate record values)\n");
+    fprintf(stderr, "      -S strict formatting (does not add space between columns)\n");
     fprintf(stderr, "      -f accepts a format string (see man page)\n");
     fprintf(stderr, "\n");
-    fprintf(stderr, "displays contacts from the AddressBook database\n");
+    fprintf(stderr, "This utility displays contacts from the AddressBook database\n");
     return 2;
 }
 

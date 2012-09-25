@@ -1,13 +1,22 @@
 # contact's makefile
 
-version=1.1
+version=1.2
 
 # paths
-bin=/usr/bin
-man=/usr/share/man/man1
+bin=/usr/local/bin
+man=/usr/local/share/man/man1
 pkgres=build_pkg/pkgres
 dist=build_pkg/dstroot
 packagemaker=/Developer/Applications/Utilities/PackageMaker.app/Contents/MacOS/PackageMaker
+
+SRCS=contacts.m FormatHelper.m 
+TESTS=AllTests.m FormatHelperTests.m test_main.m
+OBJS:=$(patsubst %.m, %.o, $(SRCS))
+TEST_OBJS:=$(patsubst %.m, %.o, $(TESTS))
+
+CPPFLAGS=-framework ObjcUnit
+# -framework ObjcUnit
+LDFLAGS=-framework Foundation -framework AddressBook
 
 BUILDOPS=-buildstyle Deployment
 
@@ -15,21 +24,25 @@ BUILDOPS=-buildstyle Deployment
 
 all: contacts
 
-contacts:
-	xcodebuild $(BUILDOPS) -target contacts
+contacts: $(OBJS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
-test:
-	xcodebuild $(BUILDOPS) -target test && ./build/test
+test: test_main
+	./test_main
+
+test_main: $(TEST_OBJS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 
 clean: cleanpkg
+	$(RM) $(OBJS) contacts
 	rm -rf build
 	rm -rf build_dmg
-	
+
 cleanpkg:
 	test -e build_pkg && sudo rm -rf build_pkg; :
 
 install:
-	cp build/contacts $(bin)
+	cp contacts $(bin)
 	cp contacts.1 $(man)
 
 uninstall:
@@ -50,7 +63,7 @@ dstroot: all
 pkgres:
 	mkdir -p $(pkgres)
 	cp "GPL License.rtf" $(pkgres)/"License.rtf"
-	cp "README" $(pkgres)/"ReadMe.txt"
+	cp "README.md" $(pkgres)/"ReadMe.txt"
 	cp pkg_resources/preupgrade $(pkgres)
 
 package: dstroot pkgres
@@ -73,13 +86,12 @@ build/contacts_man.pdf: contacts.1
 	mkdir -p build/man/man1
 	cp contacts.1 build/man/man1
 	man -M $(shell pwd)/build/man -t contacts | pstopdf -i -o build/contacts_man.pdf
-	
 
 diskimage: package sourcedist build/contacts_man.pdf
 	rm -f build/contacts1.1.dmg
 	rm -rf build_dmg
 	mkdir -p "build_dmg/source code"
-	cp README build_dmg/ReadMe.txt
+	cp README.md build_dmg/ReadMe.txt
 	cp "GPL License.rtf" build_dmg
 	cp build/contacts$(version).tgz "build_dmg/source code"
 	cp build/contacts_man.pdf "build_dmg/contacts man page.pdf"
