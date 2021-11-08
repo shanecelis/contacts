@@ -73,7 +73,7 @@ void printPeopleWithFormat(NSArray *people, NSString *format);
 
 void showHeader(NSArray* formatters);
 
-int peopleSort(id peep1, id peep2, void *context);
+NSInteger peopleSort(id _Nonnull peep1, id _Nonnull peep2, void *context);
 
 // </prototypes>
 
@@ -315,7 +315,7 @@ void printPeopleWithFormat(NSArray *people,
 /*
   Sorts people by the FormatHelper given in the context.
 */
-int peopleSort(id peep1, id peep2, void *context) {
+NSInteger peopleSort(id peep1, id peep2, void *context) {
     ABPerson *p1 = peep1;
     ABPerson *p2 = peep2;
 
