@@ -124,7 +124,7 @@ int main (int argc, char * argv[]) {
             loose = YES;
             break;
         case 'f':
-            format = [NSString stringWithCString: optarg];
+            format = [NSString stringWithUTF8String:optarg];
             break;
         case 'H':
             show_headers = NO;
@@ -172,7 +172,7 @@ int main (int argc, char * argv[]) {
     } else {
 
         // search for the string given
-        NSString *searchString = [NSString stringWithCString: argv[0]];
+        NSString *searchString = [NSString stringWithUTF8String:argv[0]];
 
         ABSearchElement *firstName =
             [ABPerson searchElementForProperty:kABFirstNameProperty
@@ -256,8 +256,8 @@ void showHeader(NSArray* formatters) {
     NSEnumerator *formatEnumerator = [formatters objectEnumerator];
     FormatHelper *formatter;
     while((formatter = [formatEnumerator nextObject]) != nil) {
-        printf([[formatter printfToken] cString], 
-               [[formatter headerName] cString]);
+        printf([[formatter printfToken] UTF8String],
+               [[formatter headerName] UTF8String]);
     }
     printf("\n");
 
@@ -304,9 +304,9 @@ void printPeopleWithFormat(NSArray *people,
         formatEnumerator = [formatters objectEnumerator];
 
         while((formatter = [formatEnumerator nextObject]) != nil) {
-            
-            printf([[formatter printfToken] cString], 
-                   [[formatter valueForPerson: person] lossyCString]);
+
+            printf([[formatter printfToken] UTF8String],
+                   [[formatter valueForPerson: person] UTF8String]);
         }
         printf("\n");
     }
