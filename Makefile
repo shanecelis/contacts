@@ -43,6 +43,7 @@ cleanpkg:
 
 install:
 	cp contacts $(bin)
+	mkdir -p $(man)
 	cp contacts.1 $(man)
 
 uninstall:

@@ -104,7 +104,7 @@ int usage() {
     fprintf(stderr, "      -S strict formatting (does not add space between columns)\n");
     fprintf(stderr, "      -f accepts a format string (see man page)\n");
     fprintf(stderr, "\n");
-    fprintf(stderr, "This utility displays contacts from the AddressBook database\n");
+    fprintf(stderr, "This utility displays contacts from the AddressBook database.\n");
     return 2;
 }
 
@@ -164,14 +164,11 @@ int main (int argc, char * argv[]) {
         format = [format stringByAppendingString: @" %N"];
 
     if (show_me) {
-        
         peopleFound = [NSArray arrayWithObjects: [AB me], nil];
     } else if (show_all) {
-
         peopleFound = [AB people];
     } else {
-
-        // search for the string given
+        // Search for the given string.
         NSString *searchString = [NSString stringWithUTF8String:argv[0]];
 
         ABSearchElement *firstName =
@@ -277,12 +274,12 @@ void printPeopleWithFormat(NSArray *people,
     NSArray *formatters = getFormatHelpers(format);
 
     if ([formatters count] == 0) {
-        fprintf(stderr, "error: no formatter tokens found\n");
+        fprintf(stderr, "error: No formatter tokens found.\n");
         exit(3);
     }
 
     if ([people count] == 0) {
-        printf("error: no one found\n");
+        printf("warning: No one found.\n");
         exit(1);
     }
 
@@ -292,8 +289,7 @@ void printPeopleWithFormat(NSArray *people,
     }
 
     if (sort) {
-
-        people = [people sortedArrayUsingFunction: peopleSort 
+        people = [people sortedArrayUsingFunction: peopleSort
                          context: [formatters objectAtIndex: 0]];
     }
     
@@ -304,7 +300,6 @@ void printPeopleWithFormat(NSArray *people,
         formatEnumerator = [formatters objectEnumerator];
 
         while((formatter = [formatEnumerator nextObject]) != nil) {
-
             printf([[formatter printfToken] UTF8String],
                    [[formatter valueForPerson: person] UTF8String]);
         }
